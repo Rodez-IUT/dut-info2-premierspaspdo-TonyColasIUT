@@ -18,7 +18,15 @@
 		
 	</head>
 	<body>
-	
+		<form method ="post">
+			<p> Start with a letter: <input type="text" name="name"/>
+			 and status is: 
+			<select name="status">
+				<option value="Active account">Active account</option>
+				<option value="Waiting for account validation">Waiting for account validation</option>
+			</select>
+			<input type="submit" value="ok"/><p>
+		</form>
 		<?php 
 			// CONNEXION
 			$host = 'localhost';
@@ -39,15 +47,30 @@
 			}
 			// CONNEXION TERMINE
 			
+			// FORMULAIRE
+			
+			if(isset($_POST["name"])) {
+				$nameFilter = $_POST["name"]."%";
+			} else {
+				$nameFilter = "%";
+			}
+			if(isset($_POST["status"])) {
+				$statusFilter = $_POST["status"];
+			} else {
+				$statusFilter = "%";
+			}
+			
+			
 			// REQUETE
 			$stmt = $pdo->query('select users.id as user_id, username, email, s.name as status from users join status s on users.status_id = s.id
-								where s.name = "Active account" AND username LIKE("e%")');
+								where s.name LIKE("'.$statusFilter.'") AND username LIKE("'.$nameFilter.'")');
+			
+			
 			// TRAITEMENT
 			$i=0;
 			echo "<table>";
 			while ($row = $stmt->fetch())
 			{
-
 				echo "<tr>";
 				echo "<td>".$row['user_id']."</td>";
 				echo "<td>".$row['username']."</td>";
