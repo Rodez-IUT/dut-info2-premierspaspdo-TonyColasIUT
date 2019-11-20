@@ -40,12 +40,14 @@
 			// CONNEXION TERMINE
 			
 			// REQUETE
-			$stmt = $pdo->query('select users.id as user_id, username, email, s.name as status from users join status s on users.status_id = s.id');
+			$stmt = $pdo->query('select users.id as user_id, username, email, s.name as status from users join status s on users.status_id = s.id
+								where s.name = "Active account" AND username LIKE("e%")');
 			// TRAITEMENT
 			$i=0;
 			echo "<table>";
 			while ($row = $stmt->fetch())
 			{
+
 				echo "<tr>";
 				echo "<td>".$row['user_id']."</td>";
 				echo "<td>".$row['username']."</td>";
