@@ -62,9 +62,11 @@
 			
 			
 			// REQUETE
-			$stmt = $pdo->query('select users.id as user_id, username, email, s.name as status from users join status s on users.status_id = s.id
-								where s.name LIKE("'.$statusFilter.'") AND username LIKE("'.$nameFilter.'")');
+
+			$stmt = $pdo->prepare("select users.id as user_id, username, email, s.name as status from users join status s on users.status_id = s.id 
+									where s.name LIKE ? AND username LIKE ?");
 			
+			$stmt->execute([$nameFilter,$statusFilter]);
 			
 			// TRAITEMENT
 			$i=0;
